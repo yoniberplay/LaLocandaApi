@@ -6,20 +6,13 @@ using LaLocanda.Infrastructure.Persistence;
 using LaLocanda.Presentation.WebApi.Extensions;
 using Microsoft.AspNetCore.Identity;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-//builder.Services.AddControllersWithViews();
-//builder.Services.AddSession();
-//builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-//builder.Services.AddApplicationLayer(builder.Configuration);
-//builder.Services.AddShareInfrastructure(builder.Configuration);
-//builder.Services.AddIdentityInfrastructure(builder.Configuration);
-//builder.Services.AddScoped<LoginAuthorize>();
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
@@ -70,16 +63,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseHealthChecks("/health");
-
 app.UseSwaggerExtension();
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

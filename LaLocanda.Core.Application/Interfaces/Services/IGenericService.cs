@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace LaLocanda.Core.Application.Interfaces.Services
 {
-    public interface IGenericService<T,VM,SaveVM>
-        where T : class
-        where VM : class
-        where SaveVM:class
+    public interface IGenericService<Entidad,ViewModel,SaveViewModel>
+        where Entidad : class
+        where ViewModel : class
+        where SaveViewModel : class
     {
-        Task<SaveVM> Add(SaveVM saveVM);
-        Task Update(SaveVM saveVM, int id);
+        Task<SaveViewModel> Add(SaveViewModel saveVM);
+        Task Update(SaveViewModel saveVM, int id);
         Task Delete(int id);
-        Task<List<VM>> GetAllViewModel();
-        Task<SaveVM> GetByIdSaveViewModel(int id);
-        Task<VM> GetByIdViewModel(int id);
+        Task<List<ViewModel>> GetAllViewModel();
+        Task<SaveViewModel> GetByIdSaveViewModel(int id);
+        Task<ViewModel> GetByIdViewModel(int id);
     }
 }

@@ -10,32 +10,32 @@ using System.Threading.Tasks;
 
 namespace LaLocanda.Infrastructure.Identity.Contexts
 {
-    public class IDTTContext: IdentityDbContext<AppUser>
+    public class IdentityContext: IdentityDbContext<ApplicationUser>
     {
-        public IDTTContext(DbContextOptions<IDTTContext> options) : base(options) { }
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder m)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(m);
+            base.OnModelCreating(builder);
 
-            m.HasDefaultSchema("IDTT");
+            builder.HasDefaultSchema("Identity");
 
-            m.Entity<AppUser>(t =>
+            builder.Entity<ApplicationUser>(t =>
             {
                 t.ToTable("Users");
             });
 
-            m.Entity<IdentityRole>(t =>
+            builder.Entity<IdentityRole>(t =>
             {
                 t.ToTable("Roles");
             });
 
-            m.Entity<IdentityUserRole<string>>(t =>
+            builder.Entity<IdentityUserRole<string>>(t =>
             {
                 t.ToTable("UserRoles");
             });
 
-            m.Entity<IdentityUserLogin<string>>(t =>
+            builder.Entity<IdentityUserLogin<string>>(t =>
             {
                 t.ToTable("UserLogins");
             });

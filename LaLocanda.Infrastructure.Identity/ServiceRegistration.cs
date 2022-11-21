@@ -22,15 +22,11 @@ namespace LaLocanda.Infrastructure.Identity
         public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             #region Identity
-            services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<IDTTContext>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<IdentityContext>()
                     .AddDefaultTokenProviders();
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.LoginPath = "/User";
-            //    options.AccessDeniedPath = "/User/AccessDenied";
-            //});
+           
 
             services.Configure<JWTSettings>(config.GetSection("JWTSettings"));
 
@@ -53,6 +49,8 @@ namespace LaLocanda.Infrastructure.Identity
                     ValidAudience = config["JWTSettings:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWTSettings:Key"])),
                 };
+
+                //EVENTOS QUE PUEDEN SUCEDER
                 opt.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = c =>
@@ -67,14 +65,14 @@ namespace LaLocanda.Infrastructure.Identity
                         c.HandleResponse();
                         c.Response.StatusCode = 401;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse() { HasError = true, Error = "No estas autorizado" });
+                        var result = JsonConvert.SerializeObject(new JwtResponse() { HasError = true, Error = "No tiene autorizacion." });
                         return c.Response.WriteAsync(result);
                     },
                     OnForbidden = c =>
                     {
                         c.Response.StatusCode = 403;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse() { HasError = true, Error = "No estas autorizado para acceder a esta area" });
+                        var result = JsonConvert.SerializeObject(new JwtResponse() { HasError = true, Error = "No tiene autorizacion para acceder a esta area" });
                         return c.Response.WriteAsync(result);
                     }
                 };
@@ -84,17 +82,17 @@ namespace LaLocanda.Infrastructure.Identity
             #region Database
             if (config.GetValue<bool>("UseInMemoryDatabase"))
             {
-                services.AddDbContext<IDTTContext>(options =>
+                services.AddDbContext<IdentityContext>(options =>
                        options.UseInMemoryDatabase("IdentityDb"));
             }
             else
             {
-                services.AddDbContext<IDTTContext>(options =>
+                services.AddDbContext<IdentityContext>(options =>
                 {
                     options.EnableSensitiveDataLogging();
                     options.UseSqlServer(
-                        config.GetConnectionString("IDTTConnection"),
-                        m => m.MigrationsAssembly(typeof(IDTTContext).Assembly.FullName)
+                        config.GetConnectionString("IdentityConnection"),
+                        m => m.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)
                     );
                 });
             }
@@ -102,7 +100,6 @@ namespace LaLocanda.Infrastructure.Identity
 
             #region Services
             services.AddTransient<IAccountService, AccountService>();
-            //services.AddTransient<IRoleService, RoleService>();
             #endregion
         }
     }

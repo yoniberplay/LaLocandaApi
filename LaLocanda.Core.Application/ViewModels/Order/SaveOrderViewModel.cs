@@ -14,7 +14,7 @@ namespace LaLocanda.Core.Application.ViewModels.Order
         [JsonIgnore]
         public override int Id { get; set; }
 
-        [Required(ErrorMessage ="Debe proporcionar el Id de la mesa donde se hizo la orden")]
+        [Required(ErrorMessage ="Debe proporcionar el Id")]
         public int TableId { get; set; }
         public List<int> DishIds { get; set; }
 

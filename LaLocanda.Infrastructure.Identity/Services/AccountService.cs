@@ -21,12 +21,12 @@ namespace LaLocanda.Infrastructure.Identity.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly JWTSettings _jwtSettings;
 
-        public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IOptions<JWTSettings> jWTSettings)
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper, IOptions<JWTSettings> jWTSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,7 +43,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (user == null)
             {
                 response.HasError = true;
-                response.Error = $"No hay usuarios registrados con '{request.UserName}'";
+                response.Error = $"'{request.UserName}' no existe.";
                 return response;
             }
 
@@ -52,7 +52,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (!result.Succeeded)
             {
                 response.HasError = true;
-                response.Error = $"Contraseña incorrecta para el usuario '{request.UserName}'";
+                response.Error = $"Datos de acceso no validos '{request.UserName}'";
                 return response;
             }
 
@@ -82,7 +82,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (userWithSameUserName != null)
             {
                 response.HasError = true;
-                response.Error = $"El usuario {request.UserName} esta en uso";
+                response.Error = $"{request.UserName} no disponible.";
                 return response;
             }
 
@@ -91,11 +91,11 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (userWithSameEmail != null)
             {
                 response.HasError = true;
-                response.Error = $"El email {request.Email} ya esta en uso";
+                response.Error = $"{request.Email} no disponible.";
                 return response;
             }
 
-            var user = new AppUser
+            var user = new ApplicationUser
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -113,7 +113,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             else
             {
                 response.HasError = true;
-                response.Error = $"Error tratando de registrar el usuario";
+                response.Error = $"Ha ocurrido un erro durante el registro.";
 
                 foreach (var item in result.Errors)
                 {
@@ -134,7 +134,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (userWithSameUserName != null)
             {
                 response.HasError = true;
-                response.Error = $"El usuario {request.UserName} esta en uso";
+                response.Error = $"{request.UserName} no esta disponible.";
                 return response;
             }
 
@@ -143,11 +143,11 @@ namespace LaLocanda.Infrastructure.Identity.Services
             if (userWithSameEmail != null)
             {
                 response.HasError = true;
-                response.Error = $"El email {request.Email} ya esta en uso";
+                response.Error = $"{request.Email} no esta disponible.";
                 return response;
             }
 
-            var user = new AppUser
+            var user = new ApplicationUser
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -165,7 +165,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             else
             {
                 response.HasError = true;
-                response.Error = $"Error tratando de registrar el usuario";
+                response.Error = $"Ha ocurrido un erro durante el registro.";
 
                 foreach (var item in result.Errors)
                 {
@@ -177,7 +177,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
         }
 
         #region Privates
-        private async Task<JwtSecurityToken> GenerateJWToken(AppUser user)
+        private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
@@ -202,14 +202,14 @@ namespace LaLocanda.Infrastructure.Identity.Services
             var symetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signingCredentials = new SigningCredentials(symetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-            var jwtSecToken = new JwtSecurityToken(
+            var jwtSecurityToken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
 
-            return jwtSecToken;
+            return jwtSecurityToken;
         }
 
         private RefreshToken GenerateRefreshToken()
@@ -217,7 +217,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             return new RefreshToken
             {
                 Token = RandomTokenString(),
-                Expires = DateTime.UtcNow.AddDays(2),
+                Expires = DateTime.UtcNow.AddDays(7),
                 Created = DateTime.UtcNow
             };
         }

@@ -13,9 +13,9 @@ namespace LaLocandaApi.Infrastructure.Persistence.Repositories
 {
     public class TableRepository : GenericRepository<Table>, ITableRepository
     {
-        private readonly RestaurantContext _dbContext;
+        private readonly LaLocandaContext _dbContext;
 
-        public TableRepository(RestaurantContext dbContext) : base(dbContext)
+        public TableRepository(LaLocandaContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

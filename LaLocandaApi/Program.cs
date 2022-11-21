@@ -3,6 +3,7 @@ using LaLocanda.Infrastructure.Identity;
 using LaLocanda.Infrastructure.Identity.Entities;
 using LaLocanda.Infrastructure.Identity.Seeds;
 using LaLocanda.Infrastructure.Persistence;
+using LaLocanda.Infrastucture.Identity.Seeds;
 using LaLocanda.Presentation.WebApi.Extensions;
 using Microsoft.AspNetCore.Identity;
 
@@ -41,13 +42,13 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        var userM = s.GetRequiredService<UserManager<AppUser>>();
+        var userM = s.GetRequiredService<UserManager<ApplicationUser>>();
         var roleM = s.GetRequiredService<RoleManager<IdentityRole>>();
 
         await DefaultRoles.SeedAsync(userM, roleM);
-        await DefaultSuperAdmin.SeedAsync(userM, roleM);
+        await DefaultSuperAdminUser.SeedAsync(userM, roleM);
         await DefaultAdminUser.SeedAsync(userM, roleM);
-        await DefaultWaiterUser.SeedAsync(userM, roleM);
+        await DefaultBasicUser.SeedAsync(userM, roleM);
     }
     catch (Exception ex)
     {

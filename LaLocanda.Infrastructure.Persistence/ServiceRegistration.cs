@@ -13,16 +13,29 @@ using System.Threading.Tasks;
 
 namespace LaLocanda.Infrastructure.Persistence
 {
-    public static class PServiceRegistration
+    public static class ServiceRegistration
     {
         public static void AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<RestaurantContext>(
+            services.AddDbContext<LaLocandaContext>(
                     options => options.UseSqlServer(
-                        configuration.GetConnectionString("ApiConnection"),
-                        m => m.MigrationsAssembly(typeof(RestaurantContext).Assembly.FullName)));
+                        configuration.GetConnectionString("DefaultConnection"),
+                        m => m.MigrationsAssembly(typeof(LaLocandaContext).Assembly.FullName)));
 
-            //dependency injections
+            #region Contexts
+            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<LaLocandaContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
+            }
+            else
+            {
+                services.AddDbContext<LaLocandaContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                m => m.MigrationsAssembly(typeof(LaLocandaContext).Assembly.FullName)));
+            }
+            #endregion
+
+            #region Repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IDishRepository, DishRepository>();
             services.AddTransient<IIngredientRepository, IngredientRepository>();
@@ -30,6 +43,7 @@ namespace LaLocanda.Infrastructure.Persistence
             services.AddTransient<ITableRepository, TableRepository>();
             services.AddTransient<IIngredientDishRepository, IngredientDishRepository>();
             services.AddTransient<IOrderDishRepository, OrderDishRepository>();
+            #endregion
         }
     }
 }

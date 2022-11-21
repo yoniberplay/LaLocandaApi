@@ -12,9 +12,9 @@ namespace LaLocanda.Infrastructure.Persistence.Repositories
 {
     public class OrderDishRepository : GenericRepository<OrderDish>, IOrderDishRepository
     {
-        private readonly RestaurantContext _dbContext;
+        private readonly LaLocandaContext _dbContext;
 
-        public OrderDishRepository(RestaurantContext dbContext) : base(dbContext)
+        public OrderDishRepository(LaLocandaContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

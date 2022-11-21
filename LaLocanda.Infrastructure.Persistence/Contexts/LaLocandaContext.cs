@@ -1,4 +1,5 @@
-﻿using LaLocanda.Core.Domain.Entities;
+﻿using LaLocanda.Core.Domain.Common;
+using LaLocanda.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,37 @@ using System.Threading.Tasks;
 
 namespace LaLocanda.Infrastructure.Persistence.Contexts
 {
-    public class RestaurantContext:DbContext
+    public class LaLocandaContext:DbContext
     {
-        public RestaurantContext(DbContextOptions<RestaurantContext> options) : base(options) { }
+        public LaLocandaContext(DbContextOptions<LaLocandaContext> options) : base(options) { }
 
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Table> Tables { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = "DefaultAppUser";
+                        entry.Entity.Modified = DateTime.Now;
+                        entry.Entity.ModifiedBy = "DefaultAppUser";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.Modified = DateTime.Now;
+                        entry.Entity.ModifiedBy = "DefaultAppUser";
+                        break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
 
         protected override void OnModelCreating(ModelBuilder m)
         {
@@ -61,7 +85,6 @@ namespace LaLocanda.Infrastructure.Persistence.Contexts
                     }
                 );
 
-            //Orders-Dishes
             m.Entity<Order>()
                 .HasMany(ord => ord.Dishes)
                 .WithMany(dish => dish.Orders)

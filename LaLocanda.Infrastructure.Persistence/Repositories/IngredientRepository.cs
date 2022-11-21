@@ -12,9 +12,9 @@ namespace LaLocanda.Infrastructure.Persistence.Repositories
 {
     public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRepository
     {
-        private readonly RestaurantContext _dbContext;
+        private readonly LaLocandaContext _dbContext;
 
-        public IngredientRepository(RestaurantContext dbContext) : base(dbContext)
+        public IngredientRepository(LaLocandaContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

@@ -10,6 +10,6 @@ namespace LaLocanda.Core.Application.Enums
     {
         SuperAdmin,
         Admin,
-        Waiter
+        Basic
     }
 }

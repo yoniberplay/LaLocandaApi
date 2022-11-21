@@ -13,16 +13,14 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
     [Authorize(Roles = "Admin,SuperAdmin")]
     public class IngredientController : BaseApiController
     {
-        private readonly IIngredientService _ingService;
+        private readonly IIngredientService _iingredientService;
 
         public IngredientController(IIngredientService ingService)
         {
-            _ingService = ingService;
+            _iingredientService = ingService;
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,7 +34,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                     return BadRequest(vm);
                 }
 
-                var ing = await _ingService.Add(vm);
+                var ing = await _iingredientService.Add(vm);
                 if (ing == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, ing);
@@ -50,9 +48,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
             }
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         [HttpPut("Update/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveIngredientViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -67,7 +63,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                 }
 
                 vm.Id = id;
-                await _ingService.Update(vm, id);
+                await _iingredientService.Update(vm, id);
 
                 return Ok(vm);
             }
@@ -77,9 +73,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
             }
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
         [HttpGet("List")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IngredientViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,7 +82,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
         {
             try
             {
-                List<IngredientViewModel> ings = await _ingService.GetAllViewModel();
+                List<IngredientViewModel> ings = await _iingredientService.GetAllViewModel();
 
                 if (ings.Count == 0)
                     return NotFound();
@@ -109,7 +103,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
         {
             try
             {
-                var ing = await _ingService.GetByIdViewModel(id);
+                var ing = await _iingredientService.GetByIdViewModel(id);
 
                 if (ing == null)
                     return NotFound();

@@ -11,24 +11,23 @@ namespace LaLocanda.Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly RestaurantContext _dbContext;
+        private readonly LaLocandaContext _dbContext;
 
-        public GenericRepository(RestaurantContext dbContext)
+        public GenericRepository(LaLocandaContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         public virtual async Task<T> AddAsync(T t)
         {
-            await _dbContext.AddAsync(t);
+            await _dbContext.Set<T>().AddAsync(t);
             await _dbContext.SaveChangesAsync();
             return t;
         }
 
         public async Task UpdateAsync(T t, int id)
         {
-            T entry = await _dbContext.Set<T>().FindAsync(id);
-            _dbContext.Entry(entry).CurrentValues.SetValues(t);
+            _dbContext.Entry(t).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
@@ -40,9 +39,7 @@ namespace LaLocanda.Infrastructure.Persistence.Repositories
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _dbContext.Set<T>()
-                .AsNoTracking()
-                .ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(int id)
@@ -50,13 +47,13 @@ namespace LaLocanda.Infrastructure.Persistence.Repositories
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<List<T>> GetAllWithIncludesAsync(List<string> props)
+        public virtual async Task<List<T>> GetAllWithIncludesAsync(List<string> properties)
         {
-            var query = _dbContext.Set<T>().AsNoTracking().AsQueryable();
+            var query = _dbContext.Set<T>().AsQueryable();
 
-            foreach (string prop in props)
+            foreach (string property in properties)
             {
-                query = query.Include(prop);
+                query = query.Include(property);
             }
 
             return await query.ToListAsync();

@@ -146,7 +146,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                     return NotFound(ModelState);
                 }
 
-                var orders = await _orderService.GetOrdersByTable(tableId);
+                var orders = await _orderService.GetOrders(tableId);
 
                 if (orders.Count == 0)
                 {
@@ -171,7 +171,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
         {
             try
             {
-                await _tableService.ChangeTableStatus(tableId, status);
+                await _tableService.ChangeStatus(tableId, status);
                 return NoContent();
             }
             catch (Exception ex)

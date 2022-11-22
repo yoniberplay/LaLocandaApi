@@ -19,7 +19,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("Loggin")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             return Ok(await _accountService.LoginAsync(request));
@@ -31,7 +31,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers
         {
             try
             {
-                var user=await _accountService.RegisterWaiterAsync(request);
+                var user=await _accountService.RegisterBasicAsync(request);
                 if (user == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError);

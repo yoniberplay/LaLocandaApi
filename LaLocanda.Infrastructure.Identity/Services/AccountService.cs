@@ -124,7 +124,7 @@ namespace LaLocanda.Infrastructure.Identity.Services
             return response;
         }
 
-        public async Task<RegisterResponse> RegisterWaiterAsync(RegisterRequest request)
+        public async Task<RegisterResponse> RegisterBasicAsync(RegisterRequest request)
         {
             RegisterResponse response = new();
             response.HasError = false;

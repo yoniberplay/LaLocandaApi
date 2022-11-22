@@ -8,6 +8,6 @@ namespace LaLocanda.Core.Application.Interfaces.Services
 {
     public interface ITableService : IGenericService<Table, TableViewModel, SaveTableViewModel>
     {
-        Task ChangeTableStatus(int tableId, int status);
+        Task ChangeStatus(int tableId, int status);
     }
 }

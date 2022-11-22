@@ -7,7 +7,7 @@ namespace LaLocanda.Core.Application.Interfaces.Services
     public interface IUserService
     {
         Task<RegisterResponse> AddAdmin(SaveUserViewModel saveViewModel);
-        Task<RegisterResponse> AddWaiter(SaveUserViewModel saveViewModel);
-        Task<LoginResponse> Login(LoginViewModel login);
+        Task<RegisterResponse> AddBasic(SaveUserViewModel saveViewModel);
+        Task<LoginResponse> Loggin(LoginViewModel login);
     }
 }

@@ -23,7 +23,7 @@ namespace LaLocanda.Core.Application.Services
             _mapper = mapper;
         }
 
-        public async Task ChangeTableStatus(int tableId, int status)
+        public async Task ChangeStatus(int tableId, int status)
         {
             Table t=await _tableRepository.GetByIdAsync(tableId);
             t.Status = status;

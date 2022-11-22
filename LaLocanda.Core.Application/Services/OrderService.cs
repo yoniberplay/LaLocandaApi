@@ -21,14 +21,14 @@ namespace LaLocanda.Core.Application.Services
             _orderdishRepository = orderdishRepository;
         }
 
-        public async Task<List<OrderViewModel>> GetOrdersByTable(int tableId)
+        public async Task<List<OrderViewModel>> GetOrders(int tableId)
         {
             var orders = await _orderRepository.GetAllAsync();
             var ordersByTable = orders.FindAll(o => o.TableId == tableId);
             return _mapper.Map<List<OrderViewModel>>(ordersByTable);
         }
 
-        public async Task<List<OrderDishViewModel>> GetAllDishesIdsByOrder(int orderId)
+        public async Task<List<OrderDishViewModel>> GetAllDishes(int orderId)
         {
             var dishes = await _orderdishRepository.GetAllAsync();
             var dishByOrder = dishes.FindAll(i => i.OrderId == orderId);
@@ -47,7 +47,7 @@ namespace LaLocanda.Core.Application.Services
             return _mapper.Map<List<OrderViewModel>>(orders);
         }
 
-        public async Task AddDishToOrder(int orderId, int dishId)
+        public async Task AddDish(int orderId, int dishId)
         {
             OrderDish orderDish = new()
             {
@@ -57,7 +57,7 @@ namespace LaLocanda.Core.Application.Services
             await _orderdishRepository.AddAsync(orderDish);
         }
 
-        public async Task DeleteDishFromOrder(int orderId, int dishId)
+        public async Task DropDishOrder(int orderId, int dishId)
         {
             OrderDish orderDish = new()
             {

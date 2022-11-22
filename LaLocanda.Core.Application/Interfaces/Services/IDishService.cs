@@ -10,11 +10,11 @@ namespace LaLocanda.Core.Application.Interfaces.Services
 {
     public interface IDishService : IGenericService<Dish, DishViewModel, SaveDishViewModel>
     {
-        Task DeleteIngredientFromDish(int ingId, int dishId);
-        Task AddIngredientToDish(int dishId, int ingId);
-        Task<DishViewModel> GetDishWithIngredients(int id);
-        Task<List<DishViewModel>> GetAllWithIngredients();
-        Task<List<IngredientDishViewModel>> GetAllIngredientIdsByDish(int dishId);
+        Task<DishViewModel> GetDish(int id);
+        Task DeleteOnDish(int ingId, int dishId);
+        Task AddToDish(int dishId, int ingId);
+        Task<List<IngredientDishViewModel>> GetAllIngreDish(int dishId);
+        Task<List<DishViewModel>> GetAll();
         Task<double> GetPriceById(int id);
     }
 }

@@ -14,12 +14,10 @@ namespace LaLocanda.Core.Domain.Entities
         public int CantPeople { get; set; }
         public int Category { get; set; }
 
-        #region Navigation Property
         public ICollection<Ingredient> Ingredients { get; set; }
         public List<IngredientDish> IngredientDishes { get; set; }
 
         public ICollection<Order> Orders { get; set; }
         public List<OrderDish> OrderDishes { get; set; }
-        #endregion
     }
 }

@@ -13,11 +13,9 @@ namespace LaLocanda.Core.Domain.Entities
         public double TotalPrice { get; set; }
         public int Status { get; set; }
 
-        #region Navigation Props
         public Table Table { get; set; }
 
         public ICollection<Dish> Dishes { get; set; }
         public List<OrderDish> OrderDishes { get; set; }
-        #endregion
     }
 }

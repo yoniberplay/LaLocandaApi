@@ -21,17 +21,17 @@ namespace LaLocanda.Core.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<LoginResponse> Login(LoginViewModel login)
+        public async Task<LoginResponse> Loggin(LoginViewModel login)
         {
             LoginRequest request = _mapper.Map<LoginRequest>(login);
             LoginResponse response = await _accountService.LoginAsync(request);
             return response;
         }
 
-        public async Task<RegisterResponse> AddWaiter(SaveUserViewModel saveViewModel)
+        public async Task<RegisterResponse> AddBasic(SaveUserViewModel saveViewModel)
         {
             RegisterRequest request = _mapper.Map<RegisterRequest>(saveViewModel);
-            RegisterResponse response = await _accountService.RegisterWaiterAsync(request);
+            RegisterResponse response = await _accountService.RegisterBasicAsync(request);
             return response;
         }
 

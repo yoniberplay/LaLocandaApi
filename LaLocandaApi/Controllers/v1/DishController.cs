@@ -56,7 +56,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var id in vm.IngredientIds)
                 {
-                    await _dishService.AddIngredientToDish(dish.Id, id);
+                    await _dishService.AddToDish(dish.Id, id);
                 }               
 
                 return NoContent();
@@ -107,7 +107,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                 List<int> forAdd = new();
                 List<int> forDelete = new();
 
-                var ingsByDish = await _dishService.GetAllIngredientIdsByDish(id);
+                var ingsByDish = await _dishService.GetAllIngreDish(id);
 
                 foreach (int ingId in vm.IngredientIds)
                 {
@@ -123,7 +123,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var del in forDelete)
                 {
-                    await _dishService.DeleteIngredientFromDish(del, id);
+                    await _dishService.DeleteOnDish(del, id);
                 }
 
                 vm.Id = id;
@@ -131,10 +131,10 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var add in forAdd)
                 {
-                    await _dishService.AddIngredientToDish(id, add);
+                    await _dishService.AddToDish(id, add);
                 }
 
-                return Ok(await _dishService.GetDishWithIngredients(id));
+                return Ok(await _dishService.GetDish(id));
             }
             catch (Exception ex)
             {
@@ -151,7 +151,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
         {
             try
             {
-                List<DishViewModel> dishes = await _dishService.GetAllWithIngredients();
+                List<DishViewModel> dishes = await _dishService.GetAll();
 
                 if (dishes.Count == 0)
                     return NotFound();
@@ -177,7 +177,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                 if (dish == null)
                     return NotFound();
 
-                return Ok(await _dishService.GetDishWithIngredients(id));
+                return Ok(await _dishService.GetDish(id));
             }
             catch (Exception ex)
             {

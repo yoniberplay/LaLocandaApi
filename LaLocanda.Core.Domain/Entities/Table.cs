@@ -13,8 +13,6 @@ namespace LaLocanda.Core.Domain.Entities
         public string Description { get; set; }
         public int Status { get; set; }
 
-        #region Navigation Props
         public ICollection<Order> Orders { get; set; }
-        #endregion
     }
 }

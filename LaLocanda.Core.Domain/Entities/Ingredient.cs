@@ -11,9 +11,7 @@ namespace LaLocanda.Core.Domain.Entities
     {
         public string Name { get; set; }
 
-        #region Navigation Property
         public ICollection<Dish> Dishes { get; set; }
         public List<IngredientDish> IngredientDishes { get; set; }
-        #endregion
     }
 }

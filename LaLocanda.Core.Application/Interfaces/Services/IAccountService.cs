@@ -7,6 +7,6 @@ namespace LaLocanda.Core.Application.Interfaces.Services
     {
         Task<LoginResponse> LoginAsync(LoginRequest request);
         Task<RegisterResponse> RegisterAdminAsync(RegisterRequest request);
-        Task<RegisterResponse> RegisterWaiterAsync(RegisterRequest request);
+        Task<RegisterResponse> RegisterBasicAsync(RegisterRequest request);
     }
 }

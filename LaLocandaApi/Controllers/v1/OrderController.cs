@@ -67,7 +67,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var id in vm.DishIds)
                 {
-                    await _orderService.AddDishToOrder(order.Id, id);
+                    await _orderService.AddDish(order.Id, id);
                 }
 
                 return NoContent();
@@ -120,7 +120,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
                 double amountToAdd = 0;
                 double amountToSubstract = 0;
 
-                var dishByOrder = await _orderService.GetAllDishesIdsByOrder(id);
+                var dishByOrder = await _orderService.GetAllDishes(id);
 
                 foreach (int dishId in vm.DishIds)
                 {
@@ -142,7 +142,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var del in forDelete)
                 {
-                    await _orderService.DeleteDishFromOrder(id, del);
+                    await _orderService.DropDishOrder(id, del);
                 }
 
                 vm.TotalPrice += amountToAdd;
@@ -153,7 +153,7 @@ namespace LaLocandaApi.Presentation.WebApi.Controllers.v1
 
                 foreach (var add in forAdd)
                 {
-                    await _orderService.AddDishToOrder(id, add);
+                    await _orderService.AddDish(id, add);
                 }
 
                 return NoContent();

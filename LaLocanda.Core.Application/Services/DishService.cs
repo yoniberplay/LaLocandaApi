@@ -5,11 +5,7 @@ using LaLocanda.Core.Application.ViewModels.Ingredient;
 using LaLocanda.Core.Application.ViewModels.IngredientDish;
 using LaLocanda.Core.Domain.Entities;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LaLocanda.Core.Application.Services
 {
@@ -26,19 +22,19 @@ namespace LaLocanda.Core.Application.Services
             _ingdishRepository = ingdishRepository;
         }
 
-        public async Task<List<DishViewModel>> GetAllWithIngredients()
+        public async Task<List<DishViewModel>> GetAll()
         {
             var dishes = await _dishRepository.GetAllWithIncludesAsync(new List<string> { "Ingredients" });
             return _mapper.Map<List<DishViewModel>>(dishes);
         }
 
-        public async Task<DishViewModel> GetDishWithIngredients(int id)
+        public async Task<DishViewModel> GetDish(int id)
         {
             var dish = await _dishRepository.GetByIdWithIncludeAsync(id, new List<string>(), new List<string> { "Ingredients" });
             return _mapper.Map<DishViewModel>(dish);
         }
 
-        public async Task AddIngredientToDish(int dishId, int ingId)
+        public async Task AddToDish(int dishId, int ingId)
         {
             IngredientDish ingredientDish = new()
             {
@@ -48,7 +44,7 @@ namespace LaLocanda.Core.Application.Services
             await _ingdishRepository.AddAsync(ingredientDish);
         }
 
-        public async Task DeleteIngredientFromDish(int ingId, int dishId)
+        public async Task DeleteOnDish(int ingId, int dishId)
         {
             IngredientDish ingDish = new()
             {
@@ -59,7 +55,7 @@ namespace LaLocanda.Core.Application.Services
             await _ingdishRepository.DeleteAsync(ingDish);
         }
 
-        public async Task<List<IngredientDishViewModel>> GetAllIngredientIdsByDish(int dishId)
+        public async Task<List<IngredientDishViewModel>> GetAllIngreDish(int dishId)
         {
             var ingredients = await _ingdishRepository.GetAllAsync();
             var ingByDish = ingredients.FindAll(i => i.DishId == dishId);
